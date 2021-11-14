@@ -3,7 +3,6 @@ import {useLocation, useHistory, useParams, Redirect} from 'react-router-dom'
 import EditHeroPage from '../editHeroPage/EditHeroPage'
 import s from './DetailsPage.module.css'
 import * as supheroAPI from '../../services/hero-api'
-import Spinner from '../../components/loader/Loader'
 
 export default function DetailsPage(){
     const history = useHistory()
@@ -13,12 +12,9 @@ export default function DetailsPage(){
     const [hero, setHero] = useState(null)
     const [isDeleting, setIsDeleting] = useState(false)
     const [needEdit, setNeedEdit] = useState(false)
-    const [loading, setLoading] = useState(false)
 
     useEffect(async ()=>{
-        setLoading(true)
         await supheroAPI.fetchHeroById(heroId).then(setHero)
-        setLoading(false)
     }, [heroId])
 
     function onGoBack(){
@@ -38,7 +34,7 @@ export default function DetailsPage(){
 
     return (
         <>
-        {hero && !needEdit && !loading &&(
+        {hero && !needEdit &&(
             <>
                 <h1>Detail information about {hero.nickname}</h1>
                 <div className={s.wrapper}>
@@ -60,7 +56,6 @@ export default function DetailsPage(){
         )}
         {isDeleting && <Redirect to="/heroes" />}
         {needEdit && (<EditHeroPage props={hero}/>)}
-        {loading && <Spinner/>}
         </>
     )
 }
