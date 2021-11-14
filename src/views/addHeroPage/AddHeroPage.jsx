@@ -1,5 +1,6 @@
 import {useState} from 'react'
 import { Redirect } from 'react-router-dom'
+import Spinner from '../../components/loader/Loader'
 import * as supheroAPI from '../../services/hero-api'
 import s from './AddHeroPage.module.css'
 
@@ -11,6 +12,7 @@ export default function AddHeroPage() {
     const [phrase, setPhrase] = useState('')
 
     const [isAdded, setIsAdded] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     function handleChange (evt) {
         const {name, value} = evt.currentTarget;
@@ -52,8 +54,9 @@ export default function AddHeroPage() {
             origin_description: description,
             catch_phrase: phrase
         }
-        
+        setLoading(true)
         await supheroAPI.sendHeroToBase(superhero).then(res => console.log(res))
+        setLoading(false)
         reset()
         setIsAdded(true)
     }
@@ -89,6 +92,7 @@ export default function AddHeroPage() {
             </div>
             </>
         ) : <Redirect to='/heroes'/>}
+        {loading && <Spinner/>}
         </>
     )
 }

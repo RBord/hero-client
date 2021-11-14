@@ -1,21 +1,25 @@
 import {useState, useEffect} from "react";
 import {Link, useLocation} from 'react-router-dom'
+import Spinner from "../../components/loader/Loader";
 import * as supheroAPI from '../../services/hero-api'
 import s from './MainPage.module.css'
 
 export default function MainPage(){
     const location = useLocation()
     const [heroes, setHeroes] = useState(null)
+    const [loading, setLoading] = useState(false)
 
-    useEffect(() => {
-        supheroAPI.fetchAllHeroes().then(setHeroes)
-    },[])
+    useEffect(async () => {
+        setLoading(true)
+        await supheroAPI.fetchAllHeroes().then(setHeroes)
+        setLoading(false)
+    }, [])
 
 
     return (
         <>
             <h1>All Superheroes in Base</h1>
-            {heroes && (
+            {heroes && !loading && (
                 <ul className={s.list}>
                     {heroes.map(({_id, nickname, images}) => {
                         return (
@@ -35,6 +39,7 @@ export default function MainPage(){
                 }
                 </ul>
             )}
+            {loading && <Spinner/>}
         </>
     )
 }

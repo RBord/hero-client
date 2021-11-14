@@ -6,6 +6,12 @@
   border-bottom-right-radius: 30px;
   border-top-right-radius: 30px;
 }
+@media screen and (max-width: 600px) {
+  .wrapper {
+    display: grid;
+    max-width: 400px;
+  }
+}
 .infoContainer {
   margin-left: 20px;
   width: 60%;
@@ -14,6 +20,17 @@
 .image {
   width: 50%;
   max-height: 450px;
+}
+@media screen and (max-width: 600px) {
+  .image {
+    width: 75%;
+    margin: 0 auto;
+  }
+  .infoContainer {
+    margin: 0 auto;
+    width: 75%;
+    padding-right: 0px;
+  }
 }
 .wrapperBtns {
   padding: 20px 0px;
