@@ -9,10 +9,17 @@ export default function MainPage(){
     const [heroes, setHeroes] = useState(null)
     const [loading, setLoading] = useState(false)
 
-    useEffect(async () => {
+    useEffect(() => {
         setLoading(true)
-        await supheroAPI.fetchAllHeroes().then(setHeroes)
-        setLoading(false)
+        async function getAllHeroes(){
+            try {
+                await supheroAPI.fetchAllHeroes().then(setHeroes)
+                setLoading(false)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        getAllHeroes()
     }, [])
 
 
