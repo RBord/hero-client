@@ -1,0 +1,31 @@
+.wrapper {
+  display: flex;
+  max-width: 700px;
+  margin: 0 auto;
+  border: 2px solid grey;
+  border-bottom-right-radius: 30px;
+  border-top-right-radius: 30px;
+}
+.infoContainer {
+  margin-left: 20px;
+  width: 60%;
+  padding-right: 20px;
+}
+.image {
+  width: 50%;
+  max-height: 450px;
+}
+.wrapperBtns {
+  padding: 20px 0px;
+  text-align: center;
+}
+.btn {
+  padding: 10px 20px;
+  border-radius: 30px;
+  border: none;
+}
+.btn:hover,
+.btn:focus {
+  background-color: darkgray;
+  cursor: pointer;
+}
