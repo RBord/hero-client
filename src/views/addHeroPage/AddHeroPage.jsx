@@ -2,7 +2,8 @@ import {useState} from 'react'
 import { Redirect } from 'react-router-dom'
 import Spinner from '../../components/loader/Loader'
 import * as supheroAPI from '../../services/hero-api'
-import s from './AddHeroPage.module.css'
+
+import { TextField, Container, Button} from '@mui/material'
 
 export default function AddHeroPage() {
     const [nickname, setNickname] = useState('')
@@ -61,7 +62,6 @@ export default function AddHeroPage() {
         setIsAdded(true)
     }
 
-
     return (
         <>
         {!isAdded ? (
@@ -69,27 +69,17 @@ export default function AddHeroPage() {
             <h1>
                 Add Hero
             </h1>
-            <div className={s.wrapper}>
-                <form onSubmit={handleSubmit}>
-                    <label htmlFor="nickname"><p>Nickname: </p>
-                        <input type="text" id='nickname' name='nickname' value={nickname} onChange={handleChange} required className={s.input}/>
-                    </label>
-                    <label htmlFor="real_name"><p>Real Name: </p>
-                        <input type="text" id='real_name' name='real_name' value={realName} onChange={handleChange} required className={s.input}/>
-                    </label>
-                    <label htmlFor="superpowers"><p>Superpowers: </p>
-                        <textarea type='text' name="superpowers" id="superpowers" value={powers} onChange={handleChange} required className={s.textarea}/>
-                    </label>
-                    <label htmlFor="origin_description"><p>Description: </p>
-                        <textarea type="text" id='origin_description' name='origin_description' value={description} onChange={handleChange} className={s.textarea}/>
-                    </label>
-                    <label htmlFor="catch_phrase"><p>Catch Phrase: </p>
-                        <textarea type="text" id='catch_phrase' name='catch_phrase' value={phrase} onChange={handleChange} className={s.textarea}/>
-                    </label>
-                    
-                    <button type='submit' className={s.btn}>ADD</button>
-                </form>
-            </div>
+            <Container maxWidth="sm">
+                <TextField id="outlined-basic" label="Nickname" margin="normal" required variant="outlined" size='small' fullWidth name='nickname' value={nickname} onChange={handleChange}/>
+                <TextField id="outlined-basic" label="Real Name" margin="normal" required variant="outlined" size='small' fullWidth name='real_name' value={realName} onChange={handleChange} />
+                <TextField id="outlined-multiline-static" label="Superpowers" margin="normal" required multiline rows={6} fullWidth name='superpowers' value={powers} onChange={handleChange} />
+                <TextField id="outlined-multiline-static" label="Description" margin="normal" multiline rows={6}  fullWidth name='origin_description' value={description} onChange={handleChange} />
+                <TextField id="outlined-multiline-static" label="Catch Phrase" margin="normal" multiline rows={6}  fullWidth name='catch_phrase' value={phrase} onChange={handleChange} />
+                <Button variant="contained" href="#contained-buttons" onClick={handleSubmit}>
+                    ADD
+                </Button>
+            </Container>
+            
             </>
         ) : <Redirect to='/heroes'/>}
         {loading && <Spinner/>}

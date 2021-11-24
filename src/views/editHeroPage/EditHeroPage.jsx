@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 import { Redirect, useLocation, useHistory} from 'react-router-dom'
+
 import * as supheroAPI from '../../services/hero-api'
 import s from './EditHeroPage.module.css'
 
@@ -12,6 +13,8 @@ export default function EditHeroPage(props) {
     const [powers, setPowers] = useState('')
     const [descr, setDescription] = useState('')
     const [phras, setPhrase] = useState('')
+
+    const [selectedFile, setSelectedFile] = useState('')
 
     const [isEdited, setIsEdited] = useState(false)
 
@@ -58,6 +61,10 @@ export default function EditHeroPage(props) {
         history.push(location.state?.from)
     }
 
+    function handleImageInput(evt){
+        setSelectedFile(evt.target.files[0])
+    }
+
     async function handleSubmit(evt){
         evt.preventDefault()
 
@@ -72,6 +79,14 @@ export default function EditHeroPage(props) {
         await supheroAPI.updateHeroInfoById(_id, superhero).then(res => console.log(res))
         reset()
         setIsEdited(true)
+
+        if(selectedFile){
+            const formData = new FormData()
+            formData.append("name", nick)
+            formData.append("image", selectedFile)
+
+            await supheroAPI.updateImageOfHero(_id, formData).then(res => console.log(res))
+        }
     }
 
     return (
@@ -82,7 +97,7 @@ export default function EditHeroPage(props) {
                 Edit {nickname}
             </h1>
             <div className={s.wrapper}>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} encType="multipart/form-data">
                     <label htmlFor="nickname"><p>Nickname: </p>
                         <input type="text" id='nickname' name='nickname' value={nick} onChange={handleChange} required className={s.input}/>
                     </label>
@@ -98,12 +113,11 @@ export default function EditHeroPage(props) {
                     <label htmlFor="catch_phrase"><p>Catch Phrase: </p>
                         <textarea type="text" id='catch_phrase' name='catch_phrase' value={phras} onChange={handleChange} className={s.textarea} />
                     </label>
+                    <input type="file" name='file' onChange={handleImageInput} />
                     <button type='submit' className={s.btn}>EDIT</button>
                     <button type='button' onClick={onGoBack} className={s.btn}>BACK</button>
                 </form>
             </div>
-            
-            
             </>
         ) : <Redirect to='/heroes'/>}
         </>
