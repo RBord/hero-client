@@ -1,8 +1,10 @@
 import {useState, useEffect} from 'react'
 import { Redirect, useLocation, useHistory} from 'react-router-dom'
+import { TextField, Container, Button, Input} from '@mui/material'
 
-import * as supheroAPI from '../../services/hero-api'
 import s from './EditHeroPage.module.css'
+import * as supheroAPI from '../../services/hero-api'
+
 
 export default function EditHeroPage(props) {
     const location = useLocation()
@@ -19,6 +21,7 @@ export default function EditHeroPage(props) {
     const [isEdited, setIsEdited] = useState(false)
 
     const {_id, nickname, real_name, superpowers, origin_description, catch_phrase} = props.props
+    
     useEffect(() => {
         setNick(nickname)
         setRealName(real_name)
@@ -96,28 +99,27 @@ export default function EditHeroPage(props) {
             <h1>
                 Edit {nickname}
             </h1>
-            <div className={s.wrapper}>
-                <form onSubmit={handleSubmit} encType="multipart/form-data">
-                    <label htmlFor="nickname"><p>Nickname: </p>
-                        <input type="text" id='nickname' name='nickname' value={nick} onChange={handleChange} required className={s.input}/>
+            <Container maxWidth="sm">
+                <TextField id="outlined-basic" label="Nickname" margin="normal" required variant="outlined" size='small' fullWidth name='nickname' value={nick} onChange={handleChange}/>
+                <TextField id="outlined-basic" label="Real Name" margin="normal" required variant="outlined" size='small' fullWidth name='real_name' value={realName} onChange={handleChange} />
+                <TextField id="outlined-multiline-static" label="Superpowers" margin="normal" required multiline rows={6} fullWidth name='superpowers' value={powers} onChange={handleChange} />
+                <TextField id="outlined-multiline-static" label="Description" margin="normal" multiline rows={6}  fullWidth name='origin_description' value={descr} onChange={handleChange} />
+                <TextField id="outlined-multiline-static" label="Catch Phrase" margin="normal" multiline rows={6}  fullWidth name='catch_phrase' value={phras} onChange={handleChange} />
+                <div className={s.btnWrapper}>
+                    <label htmlFor="contained-button-file">
+                        <Input accept="image/*" id="contained-button-file" multiple type="file" onChange={handleImageInput} className={s.input}/>
+                        <Button variant="contained" component="span">
+                            Upload
+                        </Button>
                     </label>
-                    <label htmlFor="real_name"><p>Real Name: </p>
-                        <input type="text" id='real_name' name='real_name' value={realName} onChange={handleChange} required className={s.input}/>
-                    </label>
-                    <label htmlFor="superpowers"><p>Superpowers: </p>
-                        <textarea type='text' name="superpowers" id="superpowers" value={powers} onChange={handleChange} required className={s.textarea} />
-                    </label>
-                    <label htmlFor="origin_description"><p>Description: </p>
-                        <textarea type="text" id='origin_description' name='origin_description' value={descr} onChange={handleChange} className={s.textarea}/>
-                    </label>
-                    <label htmlFor="catch_phrase"><p>Catch Phrase: </p>
-                        <textarea type="text" id='catch_phrase' name='catch_phrase' value={phras} onChange={handleChange} className={s.textarea} />
-                    </label>
-                    <input type="file" name='file' onChange={handleImageInput} />
-                    <button type='submit' className={s.btn}>EDIT</button>
-                    <button type='button' onClick={onGoBack} className={s.btn}>BACK</button>
-                </form>
-            </div>
+                    <Button variant="contained" href="#contained-buttons" onClick={handleSubmit}>
+                        ADD
+                    </Button>
+                    <Button variant="contained" href="#contained-buttons" onClick={onGoBack}>
+                        BACK
+                    </Button>
+                </div>
+            </Container>
             </>
         ) : <Redirect to='/heroes'/>}
         </>
